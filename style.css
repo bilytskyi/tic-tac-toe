@@ -1,0 +1,19 @@
+.board {
+    padding: 20px;
+    height: 300px;
+    width: 300px;
+    border: 2px solid red;
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+}
+
+.cell {
+    border: 1px solid;
+    height: 98px;
+    width: 98px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 36px;
+}
