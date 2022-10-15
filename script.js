@@ -13,7 +13,7 @@ const gameBoard = (() => {
     const add = (a, b) => a + b;
     const sub = (a, b) => a - b;
 
-    const displayBoard = (board) => {
+    const setBoard = (board) => {
         for (let i = 0; i < board.length; i++) {
             const divCell = document.createElement('div');
             divCell.textContent = board[i];
@@ -23,12 +23,17 @@ const gameBoard = (() => {
         }
     }
 
-    // const test1 = () => displayBoard(board);
+    const displayBoard = () => setBoard(board);
 
     const displayMark = (mark, position) => {
-        divBoard.innerHTML = "";
+        // divBoard.innerHTML = "";
         board[position] = mark;
-        displayBoard(board);
+        const selector = `.cell[id="${position}"]`;
+        const cellWithThisPosition = document.querySelector(selector);
+
+        cellWithThisPosition.textContent = mark;
+
+        // displayBoard(board);
     }
 
     // const test3 = (divCells) => {
@@ -43,7 +48,7 @@ const gameBoard = (() => {
     return {
         add,
         sub,
-        board,
+        setBoard,
         displayBoard,
         // test1,
         displayMark,
@@ -53,14 +58,14 @@ const gameBoard = (() => {
 // gameBoard.test2('X', 2)
 // gameBoard.test2('X', 3)
 
-const buttons = document.querySelectorAll('button');
-const text = document.querySelector('p');
+// const buttons = document.querySelectorAll('button');
+// const text = document.querySelector('p');
 
-buttons.forEach(button => {
-    button.addEventListener('click', (event) => {
-        text.textContent = `${event.target.id}`
-    })
-})
+// buttons.forEach(button => {
+//     button.addEventListener('click', (event) => {
+//         text.textContent = `${event.target.id}`
+//     })
+// })
 
 const divCells = document.querySelectorAll('cell');
 
@@ -79,7 +84,52 @@ const Player = (mark) => {
 const xPlayer = Player('X');
 const yPlayer = Player('O');
 
-text.textContent = xPlayer.getMark();
+// xPlayer.move(0);
+// yPlayer.move(5);
 
+const displayController = (() => {
+
+    const add = (a, b) => a + b;
+    const sub = (a, b) => a - b;
+
+    const play1 = () => {
+        const buttons = document.querySelectorAll('button');
+        const text = document.querySelector('p');
+        buttons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                text.textContent = `${event.target.id}`
+            });
+        });
+
+    }
+
+    const play2 = () => {
+        const cells = document.querySelectorAll('.cell');
+        const text = document.querySelector('p');
+        cells.forEach(cell => {
+            cell.addEventListener('click', (event) => {
+                text.textContent = `${event.target.id}`
+                xPlayer.move(event.target.id);
+            });
+        });
+
+    }
+
+    return {
+        add,
+        sub,
+        play1,
+        play2,
+    };
+
+})();
+
+// displayController.play1();
+
+// displayController.play2();
+
+
+gameBoard.displayBoard();
 xPlayer.move(0);
-yPlayer.move(5);
+xPlayer.move(5);
+displayController.play2();
