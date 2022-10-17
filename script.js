@@ -42,7 +42,7 @@ const gameBoard = (() => {
 
     const displayBoard = () => setBoard(board);
 
-    const displayMark = (mark, position) => {
+    const displayMark = (mark, position, name) => {
 
         const selector = `.cell[id="${position}"]`;
         const cellWithThisPosition = document.querySelector(selector);
@@ -53,11 +53,11 @@ const gameBoard = (() => {
         }
 
         if (gameResult() == 'X') { // basic win condition
-            alert("X is WIN!");
+            alert(`${name} is WIN!`);
         }
 
         if (gameResult() == 'O') { // basic win condition
-            alert("O is WIN!");
+            alert(`${name} is WIN!`);
         }
 
         if (gameResult() == '' && !board.includes('')) {
@@ -75,11 +75,12 @@ const gameBoard = (() => {
 
 })();
 
-const Player = (mark) => {
+const Player = (mark, name) => {
     const getMark = () => mark;
+    this.name = name;
 
     const move = (position) => {
-        gameBoard.displayMark(getMark(), position)
+        gameBoard.displayMark(getMark(), position, this.name)
     }
 
 
@@ -88,25 +89,21 @@ const Player = (mark) => {
 
 const displayController = (() => {
 
-    const play = () => {
+    const play = (playerOne, playerTwo) => {
         gameBoard.displayBoard();
         const cells = document.querySelectorAll('.cell');
-        const displayId = document.querySelector('.display-id');
-        const displayPlayerTurn = document.querySelector('.display-player-turn');
         let turn = 1;
         cells.forEach(cell => {
             cell.addEventListener('click', (event) => {
-                displayId.textContent = `${event.target.id}`;
-                displayPlayerTurn.textContent = `${turn}`;
 
                 if (turn == 1) {
                     turn += 1;
-                    xPlayer.move(event.target.id);
+                    playerOne.move(event.target.id);
                 }
 
                 else {
                     turn -= 1;
-                    yPlayer.move(event.target.id);
+                    playerTwo.move(event.target.id);
                 }
 
             });
@@ -120,7 +117,26 @@ const displayController = (() => {
 
 })();
 
-const xPlayer = Player('X');
-const yPlayer = Player('O');
 
-displayController.play();
+const trigger = document.querySelector('#start-button');
+
+trigger.addEventListener('click', () => {
+
+    const playerOne = Player('X', document.querySelector('#p-1').value);
+    const playerTwo = Player('O', document.querySelector('#p-2').value);
+
+    displayController.play(playerOne, playerTwo);
+
+    trigger.style.display = 'none';
+    document.querySelector('#p-1').style.display = 'none';
+    document.querySelector('#p-2').style.display = 'none';
+    document.getElementById('reset').style.display = 'block';
+
+    document.getElementById('reset').addEventListener('click', () => location.reload());
+
+})
+
+// const xPlayer = Player('X');
+// const yPlayer = Player('O');
+
+// displayController.play();
