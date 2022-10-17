@@ -4,6 +4,30 @@ const gameBoard = (() => {
                  "", "", "",
                  "", "", ""]; 
 
+
+    const winCondition = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+        [0, 4, 8], [2, 4, 6]
+    ]
+
+    const checkWinCondition = (winCondition) => {
+        for (let i = 0; i < winCondition.length; i++) {
+
+            if (board[winCondition[i][0]] + board[winCondition[i][1]] + board[winCondition[i][2]] == "XXX") {
+                return "X";
+            }
+            if (board[winCondition[i][0]] + board[winCondition[i][1]] + board[winCondition[i][2]] == "OOO") {
+                return "O";
+            }
+        }
+
+        return "";
+
+    }
+
+    const gameResult = () => checkWinCondition(winCondition);
+
     const divBoard = document.querySelector('.board');
 
     const setBoard = (board) => {
@@ -28,13 +52,22 @@ const gameBoard = (() => {
             cellWithThisPosition.textContent = mark;
         }
 
-        if (board[0] == 'X' && board[1] == 'X' && board[2] == 'X') { // basic win condition
-            alert("Hey!! You WIN!!!");
+        if (gameResult() == 'X') { // basic win condition
+            alert("X is WIN!");
+        }
+
+        if (gameResult() == 'O') { // basic win condition
+            alert("O is WIN!");
+        }
+
+        if (gameResult() == '' && !board.includes('')) {
+            alert('DRAW!');
         }
 
     }
 
     return {
+        board,
         setBoard,
         displayBoard,
         displayMark,
